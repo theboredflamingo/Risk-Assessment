@@ -1,0 +1,7 @@
+stockenv/
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
