@@ -6,6 +6,7 @@ from sklearn.metrics import precision_score
 from datetime import datetime
 import pickle
 import os
+from multiprocessing import Pool
 
 # =========================================
 # CONFIG
@@ -102,16 +103,31 @@ def compute_features(df, nifty_df, stock_id):
 # =========================================
 # BUILD DATASET
 # =========================================
+def process_stock(args):
+    ticker, stock_id, nifty_df = args
+
+    df = fetch_data(ticker)
+    df = compute_features(df, nifty_df, stock_id)
+
+    return df
+
+
+
 def build_dataset():
     nifty_df = fetch_niftybank()
-    all_data = []
 
-    for ticker, stock_id in STOCKS.items():
-        df = fetch_data(ticker)
-        df = compute_features(df, nifty_df, stock_id)
-        all_data.append(df)
+    args_list = [
+        (ticker, stock_id, nifty_df)
+        for ticker, stock_id in STOCKS.items()
+    ]
 
-    return pd.concat(all_data).sort_index()
+    with Pool(processes=5) as pool:
+        results = pool.map(process_stock, args_list)
+
+    final_df = pd.concat(results)
+    final_df = final_df.sort_index()
+
+    return final_df
 
 
 # =========================================
