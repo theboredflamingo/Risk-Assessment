@@ -1,0 +1,51 @@
+name: Daily Model Run
+
+on:
+  schedule:
+    - cron: "30 10 * * 1-5"   # 4:00 PM IST (UTC 10:30)
+  workflow_dispatch:
+
+permissions:
+  contents: write   # 🔥 REQUIRED to push back to repo
+
+jobs:
+  run-model:
+    runs-on: ubuntu-latest
+
+    env:
+      MODEL_FILE: dailym.pkl
+      LOG_FILE: run_log.txt
+
+    steps:
+      # 1. Checkout repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+
+      # 2. Setup Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # 4. Run your pipeline
+      - name: Run model pipeline
+        run: python main.py
+
+      # 5. Commit & push updates
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+          git add dailym.pkl run_log.txt
+
+          git commit -m "Auto update model + logs" || echo "No changes to commit"
+
+          git push

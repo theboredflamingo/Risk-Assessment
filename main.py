@@ -8,6 +8,8 @@ import pickle
 import os
 from multiprocessing import Pool
 
+MODEL_FILE = os.getenv("MODEL_NAME", "dailym.pkl")
+
 # =========================================
 # CONFIG
 # =========================================
@@ -19,8 +21,7 @@ STOCKS = {
     "KOTAKBANK.NS": 4
 }
 
-MODEL_FILE = "dailym.pkl"
-LOG_FILE = "run_log.txt"
+LOG_FILE = "run_log.json"
 
 # =========================================
 # LOAD / SAVE MODEL
@@ -206,9 +207,23 @@ def run():
 
     print(result)
 
+    import json
+
     with open(LOG_FILE, "a") as f:
-        f.write(str(result) + "\n")
+        f.write(json.dumps(result) + "\n")
+
+import subprocess
+
+def git_push():
+        subprocess.run("git config --global user.email 'stuthi.shrisha@github.com'", shell=True)
+        subprocess.run("git config --global user.name 'theboredflamingo'", shell=True)
+
+        subprocess.run("git add dailym.pkl run_log.json", shell=True)
+        subprocess.run("git commit -m 'update'", shell=True)
+        subprocess.run("git push origin master", shell=True)
+
 
 
 if __name__ == "__main__":
     run()
+    git_push()
