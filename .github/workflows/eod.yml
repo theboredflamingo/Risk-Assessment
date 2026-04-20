@@ -2,7 +2,7 @@ name: Daily Model Run
 
 on:
   schedule:
-    - cron: "4 11 * * 1-5"   # 4:00 PM IST (UTC 10:30) hmm try
+    - cron: "*/2 * * * *"   # 4:00 PM IST (UTC 10:30) hmm try
 
 
 permissions:
