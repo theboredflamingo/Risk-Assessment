@@ -5,13 +5,12 @@ on:
   schedule:
     - cron: "*/2 * * * *"   # 4:00 PM IST (UTC 10:30) hmm try
          # Allow manual trigger
-
-
-permissions:
-  contents: write   # 🔥 REQUIRED to push back to repo
-
+  push:
+    branches:
+      - master
+  # 🔥 REQUIRED to push back to repo
 jobs:
-  run-model:
+  run-model-again:
     runs-on: ubuntu-latest
 
     env:
