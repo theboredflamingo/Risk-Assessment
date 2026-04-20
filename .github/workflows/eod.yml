@@ -2,8 +2,8 @@ name: Daily Model Run
 
 on:
   schedule:
-    - cron: "30 10 * * 1-5"   # 4:00 PM IST (UTC 10:30)
-  workflow_dispatch:
+    - cron: "4 11 * * 1-5"   # 4:00 PM IST (UTC 10:30) hmm try
+
 
 permissions:
   contents: write   # 🔥 REQUIRED to push back to repo
