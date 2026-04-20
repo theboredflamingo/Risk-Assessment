@@ -44,7 +44,9 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-
+          git stash --include-untracked
+          git pull --rebase origin master
+          git stash pop || true
           git add dailym.pkl run_log.txt
 
           git commit -m "Auto update model + logs" || echo "No changes to commit"
