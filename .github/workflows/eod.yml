@@ -1,9 +1,10 @@
 name: Daily Model Run
 
 on:
+  workflow_dispatch: 
   schedule:
     - cron: "*/2 * * * *"   # 4:00 PM IST (UTC 10:30) hmm try
-  workflow_dispatch:          # Allow manual trigger
+         # Allow manual trigger
 
 
 permissions:
