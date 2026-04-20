@@ -1,4 +1,4 @@
-name: Daily Model Run
+name: Daily Model Run Test
 
 on:
   workflow_dispatch: 
