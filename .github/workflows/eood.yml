@@ -9,6 +9,10 @@ on:
     branches:
       - master
   # 🔥 REQUIRED to push back to repo
+
+permissions:
+  contents: write  # Allow pushing changes back to the repository
+
 jobs:
   run-model-again:
     runs-on: ubuntu-latest
@@ -22,6 +26,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
 
       # 2. Setup Python
@@ -45,19 +50,18 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
 
-          # Make sure we're on master
           git checkout master
 
-          # Pull latest changes cleanly
           git pull --rebase origin master
 
-          # Stage your outputs
           git add dailym.pkl run_log.txt
 
-          # Commit only if there are changes
           git diff --cached --quiet || git commit -m "Auto update model + logs"
 
-          # Push (retry once if rejected)
+          # 🔑 Ensure authenticated remote
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+          # Push with retry
           git push origin master || (
             git pull --rebase origin master &&
             git push origin master
