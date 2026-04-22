@@ -44,7 +44,7 @@ jobs:
         env:
           MODEL_NAME: dailym.pkl
         run: |
-          python train.py
+          python main.py
 
       # ── 5. Commit & push model + log ────────────────────────────────────────
       - name: Commit updated model and log
