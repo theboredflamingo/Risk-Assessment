@@ -3,7 +3,7 @@ name: Daily Model Run Test
 on:
   workflow_dispatch: 
   schedule:
-    - cron: "40 10 * * 1-5"  # 4:00 PM IST (UTC 10:30) hmm try
+    - cron: "45 10 * * 1-5"  # 4:00 PM IST (UTC 10:30) hmm try
          # Allow manual trigger
   # 🔥 REQUIRED to push back to repo
 
