@@ -1,0 +1,57 @@
+name: Daily Model Training
+
+on:
+  schedule:
+    # 4:30 PM IST = 11:00 UTC
+    - cron: '0 11 * * 1-5'
+
+  # Allow manual trigger from Actions tab
+  workflow_dispatch:
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      # ── 1. Checkout repo ────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Need full history so git push works cleanly
+          fetch-depth: 0
+
+      # ── 2. Set up Python ────────────────────────────────────────────────────
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      # ── 3. Install dependencies ─────────────────────────────────────────────
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install \
+            yfinance \
+            river \
+            pandas \
+            numpy \
+            scikit-learn
+
+      # ── 4. Run training script ──────────────────────────────────────────────
+      - name: Run training pipeline
+        env:
+          MODEL_NAME: dailym.pkl
+        run: |
+          python train.py
+
+      # ── 5. Commit & push model + log ────────────────────────────────────────
+      - name: Commit updated model and log
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name  "github-actions[bot]"
+          git add dailym.pkl run_log.json
+          # Only commit if something actually changed
+          git diff --cached --quiet || git commit -m "chore: retrain model $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push origin HEAD
