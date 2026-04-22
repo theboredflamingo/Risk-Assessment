@@ -3,11 +3,8 @@ name: Daily Model Run Test
 on:
   workflow_dispatch: 
   schedule:
-    - cron: "10 16 * * 1-5"  # 4:00 PM IST (UTC 10:30) hmm try
+    - cron: "40 10 * * 1-5"  # 4:00 PM IST (UTC 10:30) hmm try
          # Allow manual trigger
-  push:
-    branches:
-      - master
   # 🔥 REQUIRED to push back to repo
 
 permissions:
