@@ -45,7 +45,7 @@ jobs:
       # ── 4. Run training script ──────────────────────────────────────────────
       - name: Run training pipeline
         env:
-          MODEL_NAME: dailym.pkl
+          MODEL_NAME: dailymfinal.pkl
         run: |
           python main.py
 
