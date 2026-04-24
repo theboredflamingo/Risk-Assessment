@@ -4,3 +4,4 @@ yfinance
 river
 scikit-learn
 streamlit
+plotly
