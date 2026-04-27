@@ -122,7 +122,7 @@ def build_dataset():
         for ticker, stock_id in STOCKS.items()
     ]
 
-    with Pool(processes=5) as pool:
+    with Pool(processes=os.cpu_count()) as pool:
         results = pool.map(process_stock, args_list)
 
     final_df = pd.concat(results)
@@ -212,18 +212,6 @@ def run():
     with open(LOG_FILE, "a") as f:
         f.write(json.dumps(result) + "\n")
 
-import subprocess
-
-def git_push():
-        subprocess.run("git config --global user.email 'stuthi.shrisha@github.com'", shell=True)
-        subprocess.run("git config --global user.name 'theboredflamingo'", shell=True)
-
-        subprocess.run("git add dailym.pkl run_log.json", shell=True)
-        subprocess.run("git commit -m 'update'", shell=True)
-        subprocess.run("git push origin master", shell=True)
-
-
 
 if __name__ == "__main__":
     run()
-    git_push()

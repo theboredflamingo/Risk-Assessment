@@ -277,10 +277,8 @@ def signal_A(prob_up, threshold=0.3):
 
 def run_online_learning(df_all, threshold=0.3):
 
-    import joblib
-    model = joblib.load("dailymfinal.pkl")
-
-    model    = tree.HoeffdingAdaptiveTreeClassifier(grace_period=30)
+    import pickle
+    model = pickle.load(open("dailymfinal.pkl", "rb"))
     detector = drift.ADWIN()
     acc_m    = metrics.Accuracy()
     skip     = {'log_return','target','Open','High','Low','Close','Volume','Close_nifty'}
@@ -332,10 +330,14 @@ def run_online_learning(df_all, threshold=0.3):
             "vol_z": row['vol_z'], "close": row['Close'],
         })
 
+    model.save("dailymfinal.pkl")
+    
+
     return pd.DataFrame(rows), {
         "accuracy": acc_m.get(), "trades": trades,
         "win_rate": wins/trades if trades>0 else 0, "pnl": pnl,
     }
+
 
 def load_log():
     runs = []
