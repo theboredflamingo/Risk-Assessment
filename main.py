@@ -8,7 +8,7 @@ import pickle
 import os
 from multiprocessing import Pool
 
-MODEL_FILE = os.getenv("MODEL_NAME", "dailym.pkl")
+MODEL_FILE = os.getenv("MODEL_NAME", "dailymfinal.pkl")
 
 # =========================================
 # CONFIG

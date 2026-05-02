@@ -330,7 +330,9 @@ def run_online_learning(df_all, threshold=0.3):
             "vol_z": row['vol_z'], "close": row['Close'],
         })
 
-    model.save("dailymfinal.pkl")
+    with open("dailymfinal.pkl", "wb") as f:
+        pickle.dump(model, f)
+    print("Saved model checkpoint.")
     
 
     return pd.DataFrame(rows), {

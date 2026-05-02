@@ -54,7 +54,7 @@ jobs:
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name  "github-actions[bot]"
-          git add dailym.pkl run_log.json
+          git add dailymfinal.pkl run_log.json
           # Only commit if something actually changed
           git diff --cached --quiet || git commit -m "chore: retrain model $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push origin HEAD
